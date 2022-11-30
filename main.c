@@ -25,6 +25,7 @@ void	runtime(char **argv, char **envp)
 		if (pid == -1)
 		{
 			print_string("error\n");
+			free(line);
 			exit(0);
 		}
 		if (pid == 0)
@@ -39,6 +40,7 @@ void	runtime(char **argv, char **envp)
 		{
 			wait(&status);
 		}
+		free(line);
 	}
 }
 
