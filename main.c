@@ -14,7 +14,8 @@ void	runtime(char **argv, char **envp)
 
 	while (1)
 	{
-		print_string("#cisfun$ ");
+		if (isatty(STDOUT_FILENO))
+			print_string("#cisfun$ ");
 		line = (char *) read_line();
 		if (line == 0)
 			exit(errno);
@@ -24,7 +25,7 @@ void	runtime(char **argv, char **envp)
 		if (pid == -1)
 		{
 			print_string("error\n");
-			exit(1);
+			exit(0);
 		}
 		if (pid == 0)
 		{

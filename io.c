@@ -41,14 +41,14 @@ u8	*read_line()
 		{
 			free(b);
 			vector_free(v);
-			errno = 1;
+			errno = 0;
 			return (0);
 		}
 		if (l == 0)
 		{
 			free(b);
 			vector_free(v);
-			errno = 2;
+			errno = 0;
 			return (0);
 		}
 		vector_write(v, b, l - (b[l - 1] == '\n'));
