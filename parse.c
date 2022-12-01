@@ -64,6 +64,7 @@ char	**tokens(char *str)
 	if (r == 0)
 		return (0);
 	s = 0;
+	m = 0;
 	v = vector_new(0);
 	for (x = 0; str[x]; x++)
 	{
