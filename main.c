@@ -26,13 +26,14 @@ int	execute(char *path, char **argv, char **envp, char *name)
 		{
 			print_string(name);
 			print_string(": No such file or directory\n");
-			return (0);
+			return (-1);
 		}
 	}
 	else
 	{
 		wait(&s);
 	}
+	return (0);
 }
 
 /**
@@ -78,14 +79,13 @@ void	runtime(char **argv, char **envp)
 	char	**t;
 	char	**args;
 	char	*l;
-	pid_t	p;
 	u64	x;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 			print_string(PROMPT_TEXT);
-		l = read_line();
+		l = (char *) read_line();
 		if (l == 0)
 			exit(0);
 		t = tokens(l);

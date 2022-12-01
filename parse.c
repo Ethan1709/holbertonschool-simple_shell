@@ -71,7 +71,7 @@ char	**tokens(char *str)
 		{
 			if (m > 0)
 			{
-				r[s++] = vector_consume(v);
+				r[s++] = (char *) vector_consume(v);
 				v = vector_new(0);
 			}
 			else
@@ -85,7 +85,7 @@ char	**tokens(char *str)
 		}
 	}
 	if (m > 0)
-		r[s++] = vector_consume(v);
+		r[s++] = (char *) vector_consume(v);
 	else
 		vector_free(v);
 	r[s] = 0;
