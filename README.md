@@ -20,3 +20,7 @@ The goal of this project is to recreate a command-line interpreter of the UNIX o
 * All our header files should be include guarded
 
 ### EXAMPLES
+
+### AUTHORS
+
+***Ethan Benyayzr & Thibault Regnier***
