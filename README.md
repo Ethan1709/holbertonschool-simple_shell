@@ -23,4 +23,4 @@ The goal of this project is to recreate a command-line interpreter of the UNIX o
 
 ### AUTHORS
 
-***Ethan Benyayzr & Thibault Regnier***
+***Ethan Benyayer & Thibault Regnier***
