@@ -52,6 +52,8 @@ shell_t	*shell_iter(shell_t *s, char **argv, char **envp)
 		return (shell_free(s));
 	for (x = 0; commands[x]; x++)
 	{
+		if (commands[x]->argv[0] == 0)
+			continue;
 		pid = fork();
 		if (pid == -1)
 		{
