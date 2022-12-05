@@ -13,8 +13,15 @@ vector_t	*vector_new(vector_t *v)
 
 	if (v)
 		vector_free(v);
-	data = (u8 *) malloc_try(sizeof(u8) * 1024);
-	r = (vector_t *) malloc_try(sizeof(vector_t));
+	data = (u8 *) malloc(sizeof(u8) * 1024);
+	if (data == 0)
+		return (0);
+	r = (vector_t *) malloc(sizeof(vector_t));
+	if (r == 0)
+	{
+		free(data);
+		return (0);
+	}
 	r->data = data;
 	r->size = 1024;
 	r->curr = 0;
@@ -54,7 +61,12 @@ vector_t	*vector_write(vector_t *v, void *src, u64 len)
 		return (0);
 	if ((v->curr + len) > v->size)
 	{
-		data = (u8 *) malloc_try(sizeof(u8) * (v->size * 2));
+		data = (u8 *) malloc(sizeof(u8) * (v->size * 2));
+		if (data == 0)
+		{
+			free(data);
+			return (vector_free(v));
+		}
 		for (x = 0; x < v->curr; x++)
 			data[x] = v->data[x];
 		free(v->data);
@@ -98,7 +110,12 @@ u8	*vector_consume(vector_t *v)
 
 	if (v == 0)
 		return (0);
-	r = (u8 *) malloc_try(sizeof(u8) * (v->curr + 1));
+	r = (u8 *) malloc(sizeof(u8) * (v->curr + 1));
+	if (r == 0)
+	{
+		vector_free(v);
+		return (0);
+	}
 	r[v->curr] = '\0';
 	vector_read(v, r, v->curr);
 	vector_free(v);

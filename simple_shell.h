@@ -29,16 +29,48 @@ typedef struct vector_s
 	u64	curr;
 }	vector_t;
 
+/**
+ * struct command_s - struct
+ * @argv: u8 ptr ptr
+ * @envp: u8 ptr ptr
+ */
+typedef struct command_s
+{
+	u8	**argv;
+	u8	**envp;
+}	command_t;
+
+/**
+ * struct shell_s - struct
+ * @v: void ptr
+ */
+typedef struct shell_s
+{
+	void	*v;
+}	shell_t;
+
 void		*malloc_try(size_t size);
 char		*_strdup(char *);
+u8		*_strchr(u8 *, u8);
 void		print_string(char *str);
+u8		**_strsplit(u8 *str, u8 *lim);
 u8		*read_line();
-char		**tokens(char *str);
+int		_execve(command_t *c);
 vector_t	*vector_new(vector_t *v);
 vector_t	*vector_free(vector_t *v);
 vector_t	*vector_write(vector_t *v, void *src, u64 len);
 vector_t	*vector_read(vector_t *v, void *dst, u64 size);
 u8		*vector_consume(vector_t *v);
+command_t	*command_new(command_t *c);
+command_t	*command_free(command_t *c);
+command_t	*command_argv(command_t *c, char **argv);
+command_t	*command_envp(command_t *c, char **envp);
+command_t	**commands_read(char **envp);
+void		commands_free(command_t **commands, u64 index, u8 indexed);
+shell_t		*shell_new(shell_t *s);
+shell_t		*shell_free(shell_t *s);
+shell_t		*shell_iter(shell_t *s, char **argv, char **envp);
+shell_t		*shell_runtime(shell_t *s, char **argv, char **envp);
 
 # define BUFFER_SIZE (1024)
 # define PROMPT_TEXT "#cisfun$ "
