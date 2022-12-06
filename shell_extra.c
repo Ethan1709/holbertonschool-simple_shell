@@ -13,7 +13,8 @@ shell_t	*shell_exit(shell_t *s, u8 nl)
 		return (0);
 	if (nl)
 		print_string("\n");
-	print_string("exit\n");
+	if (isatty(STDOUT_FILENO) && isatty(STDIN_FILENO))
+		print_string("exit\n");
 	return (shell_free(s));
 }
 
