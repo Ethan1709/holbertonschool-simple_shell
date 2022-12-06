@@ -75,7 +75,8 @@ void		commands_free(command_t **commands, u64 index, u8 indexed);
 u8		*path_generate(u8 *dir, u8 *file);
 shell_t		*shell_new(shell_t *s);
 shell_t		*shell_free(shell_t *s);
-shell_t		*shell_iter(shell_t *s, char **argv, char **envp);
+shell_t		*shell_iter(shell_t *s, char **argv, command_t **commands);
+shell_t		*shell_iter_init(shell_t *s, char **argv, char **envp);
 shell_t		*shell_runtime(shell_t *s, char **argv, char **envp);
 shell_t		*shell_parse(shell_t *s, char **envp);
 shell_t		*shell_exit(shell_t *s, u8 nl);
@@ -83,5 +84,6 @@ shell_t		*shell_exit_test(shell_t *s, u8 *command);
 
 # define BUFFER_SIZE (1024)
 # define PROMPT_TEXT "#cisfun$ "
+# define ERRFILE     ": No such file or directory\n"
 
 #endif
