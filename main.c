@@ -1,110 +1,6 @@
 #include "simple_shell.h"
 
 /**
- * execute - function
- * @path: char ptr
- * @argv: char ptr ptr
- * @envp: char ptr ptr
- * @name: char ptr
- *
- * Return: int
-*/
-int	execute(char *path, char **argv, char **envp, char *name)
-{
-	pid_t	p;
-	int	s;
-
-	p = fork();
-	if (p == -1)
-	{
-		perror("failed at creating fork");
-		return (-1);
-	}
-	if (p == 0)
-	{
-		if (execve(path, argv, envp) == -1)
-		{
-			print_string(name);
-			print_string(": No such file or directory\n");
-			return (-1);
-		}
-	}
-	else
-	{
-		wait(&s);
-	}
-	return (0);
-}
-
-/**
- * execute_args - function
- * @name: char ptr
- *
- * Return: char ptr ptr
-*/
-char	**execute_args(char *name)
-{
-	char	**r;
-
-	r = (char **) malloc(sizeof(char *) * 2);
-	if (r == 0)
-		return (0);
-	r[0] = _strdup(name);
-	r[1] = 0;
-	return (r);
-}
-
-/**
- * execute_args_free - function
- * @args: char ptr ptr
-*/
-void execute_args_free(char **args)
-{
-	u64	x;
-
-	if (args == 0)
-		return;
-	for (x = 0; args[x]; x++)
-		free(args[x]);
-	free(args);
-}
-
-/**
- * runtime - function
- * @argv: char ptr ptr
- * @envp: char ptr ptr
-*/
-void	runtime(char **argv, char **envp)
-{
-	char	**t;
-	char	**args;
-	char	*l;
-	u64	x;
-
-	while (1)
-	{
-		if (isatty(STDIN_FILENO))
-			print_string(PROMPT_TEXT);
-		l = (char *) read_line();
-		if (l == 0)
-			exit(0);
-		t = tokens(l);
-		free(l);
-		if (t == 0)
-			exit(0);
-		for (x = 0; t[x]; x++)
-		{
-			args = execute_args(t[x]);
-			if (args)
-				execute(t[x], args, envp, argv[0]);
-			execute_args_free(args);
-			free(t[x]);
-		}
-		free(t);
-	}
-}
-
-/**
  * main - function
  * @argc: int
  * @argv: char ptr ptr
@@ -114,7 +10,29 @@ void	runtime(char **argv, char **envp)
 */
 int	main(int argc, char **argv, char **envp)
 {
+	shell_t	*s;
+	char	**_envp;
+	u64	x;
+
+	for (x = 0; envp[x]; x++)
+		;
+	_envp = (char **) malloc(sizeof(char *) * (x + 1));
+	for (x = 0; envp[x]; x++)
+		_envp[x] = _strdup(envp[x]);
+	_envp[x] = 0;
+
+	s = shell_new(0);
+	if (s == 0)
+	{
+		perror("failed at allocating shell");
+		exit(0);
+	}
+	shell_free(shell_runtime(s, argv, _envp));
+
+	for (x = 0; envp[x]; x++)
+		free(_envp[x]);
+	free(_envp);
+	(void) argv;
 	(void) argc;
-	runtime(argv, envp);
 	return (0);
 }

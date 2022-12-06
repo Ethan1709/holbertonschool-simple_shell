@@ -32,8 +32,15 @@ u8	*read_line()
 	u8		*b;
 	i64		l;
 
-	b = (u8 *) malloc_try(sizeof(u8) * (BUFFER_SIZE));
+	b = (u8 *) malloc(sizeof(u8) * (BUFFER_SIZE));
+	if (b == 0)
+		return (0);
 	v = vector_new(0);
+	if (v == 0)
+	{
+		free(b);
+		return (0);
+	}
 	while (1)
 	{
 		l = read(STDIN_FILENO, b, BUFFER_SIZE);
@@ -41,14 +48,12 @@ u8	*read_line()
 		{
 			free(b);
 			vector_free(v);
-			errno = 0;
 			return (0);
 		}
 		if (l == 0)
 		{
 			free(b);
 			vector_free(v);
-			errno = 0;
 			return (0);
 		}
 		vector_write(v, b, l - (b[l - 1] == '\n'));
