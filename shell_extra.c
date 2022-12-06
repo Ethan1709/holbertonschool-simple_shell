@@ -11,10 +11,12 @@ shell_t	*shell_exit(shell_t *s, u8 nl)
 {
 	if (s == 0)
 		return (0);
-	if (nl)
-		print_string("\n");
 	if (isatty(STDOUT_FILENO) && isatty(STDIN_FILENO))
+	{
+		if (nl)
+			print_string("\n");
 		print_string("exit\n");
+	}
 	return (shell_free(s));
 }
 
