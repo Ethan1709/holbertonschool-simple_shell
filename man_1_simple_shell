@@ -1,0 +1,35 @@
+.TH SIMPLE_SHELL "V1"
+.SH NAME
+hsh \- simple_shell
+.SH SYNOPSiS
+- ".hsh" (interactive mode)
+- "echo /bin/(command) | ./hsh" (non-interactive mode)
+.SH DESCRIPTION
+hsh allows to run simple_shell in both interactive and non-interactive mode
+It reads and executes basic commands entered by the user
+.SH COMPILATION
+UBUNTU 20.04.4 LTS with GCC 9.4.0., and flags -Wall, -Werror, -Wextra, and -pedantic.
+.SH EXAMPLES
+root@user-name:~/holbertonschool-simple_shell# ./hsh
+
+$ (enter your command here, for example ->  ls)
+
+$ AUTHORS  README.md  man_1_simple_shell
+
+$ pwd
+
+$ /root/holbertonschool-simple_shell
+
+$
+
+exit
+(exit to quit the program)
+
+root@user-name:~/holbertonschool-simple_shell# echo "/bin/ls" | ./hsh
+
+AUTHORS  README.md  man_1_simple_shell
+
+root@user-name:~/holbertonschool-simple_shell#
+
+SH AUTHORS
+Ethan B & Thibault R
