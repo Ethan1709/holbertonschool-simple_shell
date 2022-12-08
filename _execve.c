@@ -15,7 +15,7 @@ int	_execve(command_t *c)
 	if (c == 0)
 		return (-1);
 
-	tp = (char *) c->argv[0];
+	tp = (char *) c->path;
 	ta = (char **) c->argv;
 	te = (char **) c->envp;
 

@@ -15,6 +15,7 @@ command_t	*command_new(command_t *c)
 	r = (command_t *) malloc(sizeof(command_t));
 	if (r == 0)
 		return (0);
+	r->path = 0;
 	r->argv = 0;
 	r->envp = 0;
 	return (r);
@@ -38,6 +39,8 @@ command_t	*command_free(command_t *c)
 			free(c->argv[x]);
 		free(c->argv);
 	}
+	if (c->path)
+		free(c->path);
 	if (c)
 		free(c);
 	return (0);
