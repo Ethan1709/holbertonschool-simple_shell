@@ -30,60 +30,71 @@ typedef struct vector_s
 }	vector_t;
 
 /**
- * struct command_s - struct
- * @path: u8 ptr
- * @argv: u8 ptr ptr
- * @envp: u8 ptr ptr
- */
-typedef struct command_s
+ * struct set_s - struct
+ * @data: [][]u8
+ * @extra: u8 ptr
+ * @size: u64
+*/
+typedef struct	set_s
 {
-	u8	*path;
-	u8	**argv;
-	u8	**envp;
-}	command_t;
+	u8	**data;
+	u8	*extra;
+	u64	size;
+}	set_t;
 
 /**
  * struct shell_s - struct
- * @path: u8 ptr ptr
+ * @name: u8 ptr
+ * @envp: set_t ptr
+ * @path: set_t ptr
  */
 typedef struct shell_s
 {
-	u8	**path;
+	u8	*name;
+	set_t	*envp;
+	set_t	*path;
 }	shell_t;
 
-void		*malloc_try(size_t size);
-char		*_strdup(char *);
+u8		*_strdup(u8 *);
 u8		*_strchr(u8 *, u8);
 u64		_strlen(u8 *);
 i32		_strcmp(u8 *, u8 *);
-u8		*_strcat(u8 *dst, u8 *src);
-void		print_string(char *str);
+u8		*_strcat(u8 *, u8 *);
 u8		**_strsplit(u8 *str, u8 *lim);
+void		print_char(char);
+void		print_string(char *);
 u8		*read_line();
-int		_execve(command_t *c);
-vector_t	*vector_new(vector_t *v);
-vector_t	*vector_free(vector_t *v);
-vector_t	*vector_write(vector_t *v, void *src, u64 len);
-vector_t	*vector_read(vector_t *v, void *dst, u64 size);
-u8		*vector_consume(vector_t *v);
-command_t	*command_new(command_t *c);
-command_t	*command_free(command_t *c);
-command_t	*command_argv(command_t *c, char **argv);
-command_t	*command_envp(command_t *c, char **envp);
-command_t	**commands_read(char **envp);
-void		commands_free(command_t **commands, u64 index, u8 indexed);
 u8		*path_generate(u8 *dir, u8 *file);
-shell_t		*shell_new(shell_t *s);
-shell_t		*shell_free(shell_t *s);
-shell_t		*shell_iter(shell_t *s, char **argv, command_t **commands);
-shell_t		*shell_iter_init(shell_t *s, char **argv, char **envp);
-shell_t		*shell_runtime(shell_t *s, char **argv, char **envp);
-shell_t		*shell_parse(shell_t *s, char **envp);
-shell_t		*shell_exit(shell_t *s, u8 nl);
-shell_t		*shell_exit_test(shell_t *s, u8 *command);
+vector_t	*vector_new(vector_t *);
+vector_t	*vector_free(vector_t *);
+vector_t	*vector_write(vector_t *, void *src, u64 len);
+vector_t	*vector_read(vector_t *, void *dst, u64 size);
+u8		*vector_consume(vector_t *);
+set_t		*set_new(set_t *);
+set_t		*set_free(set_t *);
+u8		**set_consume(set_t *);
+set_t		*set_add(set_t *, u8 *str);
+set_t		*set_clone(set_t *);
+set_t		*set_filter(set_t *, u8 (*fn)(set_t *, u8 *));
+set_t		*set_apply(set_t *, vector_t *(*fn)(set_t *, vector_t *));
+u8		set_filter_path(set_t *, u8 *);
+vector_t	*set_apply_path(set_t *, vector_t *);
+u8		set_filter_path_exec(set_t *, u8 *);
+vector_t	*set_apply_path_exec(set_t *, vector_t *);
+shell_t		*shell_new(shell_t *, u8 *name, set_t *envp, set_t *path);
+shell_t		*shell_init(shell_t *, u8 *name, char **env);
+shell_t		*shell_free(shell_t *);
+shell_t		*shell_prompt(shell_t *);
+shell_t		*shell_exec(shell_t *, u8 *path, u8 **args);
+shell_t		*shell_exit(shell_t *, u8 nl);
+shell_t		*shell_exit_cmd(shell_t *, u8 **args);
+shell_t		*shell_iter_line(shell_t *, u8 **args);
+shell_t		*shell_iter(shell_t *);
+shell_t		*shell_runtime(shell_t *);
 
 # define BUFFER_SIZE (1024)
-# define PROMPT_TEXT "#cisfun$ "
+# define EXIT_TEXT   "👋"
+# define PROMPT_TEXT "🥷 $ "
 # define ERRFILE     ": No such file or directory\n"
 
 #endif

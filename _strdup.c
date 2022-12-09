@@ -2,20 +2,20 @@
 
 /**
  * _strdup - function
- * @str: char ptr
+ * @str: u8 ptr
  *
- * Return: char ptr
+ * Return: u8 ptr
 */
-char	*_strdup(char *str)
+u8	*_strdup(u8 *str)
 {
-	char	*r;
+	u8	*r;
 	u64	x;
 
 	if (str == 0)
 		return (0);
 	for (x = 0; str[x]; x++)
 		;
-	r = (char *) malloc(sizeof(char) * (x + 1));
+	r = (u8 *) malloc(sizeof(u8) * (x + 1));
 	if (r == 0)
 		return (0);
 	for (x = 0; str[x]; x++)

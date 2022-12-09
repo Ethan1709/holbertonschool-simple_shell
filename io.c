@@ -15,10 +15,13 @@ void	print_char(char c)
 */
 void	print_string(char *str)
 {
-	if (!*str)
+	u64	x;
+
+	if (str == 0)
 		return;
-	print_char(*str++);
-	print_string(str);
+	for (x = 0; str[x]; x++)
+		;
+	write(1, str, x);
 }
 
 /**

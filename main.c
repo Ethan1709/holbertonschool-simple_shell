@@ -10,29 +10,13 @@
 */
 int	main(int argc, char **argv, char **envp)
 {
-	shell_t	*s;
-	char	**_envp;
-	u64	x;
+	shell_t	*shell;
 
-	for (x = 0; envp[x]; x++)
-		;
-	_envp = (char **) malloc(sizeof(char *) * (x + 1));
-	for (x = 0; envp[x]; x++)
-		_envp[x] = _strdup(envp[x]);
-	_envp[x] = 0;
+	shell = shell_init(0, (u8 *) argv[0], envp);
+	if (shell == 0)
+		return (0);
+	shell_free(shell_runtime(shell));
 
-	s = shell_new(0);
-	if (s == 0)
-	{
-		perror("failed at allocating shell");
-		exit(0);
-	}
-	shell_free(shell_runtime(s, argv, _envp));
-
-	for (x = 0; envp[x]; x++)
-		free(_envp[x]);
-	free(_envp);
-	(void) argv;
 	(void) argc;
 	return (0);
 }
