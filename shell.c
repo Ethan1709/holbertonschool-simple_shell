@@ -11,34 +11,48 @@
  */
 shell_t	*shell_new(shell_t *s, u8 *name, set_t *envp, set_t *path)
 {
-	shell_free(s);
+	s = shell_free(s);
 	s = (shell_t *) malloc(sizeof(shell_t));
 	if (s == 0)
 		return (0);
 	s->name = _strdup(name);
 	if (s->name == 0)
+	{
+		set_free(envp);
+		set_free(path);
 		return (shell_free(s));
+	}
 	s->envp = set_clone(envp);
 	if (s->envp == 0)
+	{
+		set_free(envp);
+		set_free(path);
 		return (shell_free(s));
+	}
 	s->path = set_clone(path);
 	if (s->path == 0)
+	{
+		set_free(envp);
+		set_free(path);
 		return (shell_free(s));
+	}
+	set_free(envp);
+	set_free(path);
 	return (s);
 }
 
 /**
- * shell_init_envp - function
+ * shell_init_return - function
  * @s: shell_t ptr
- * @env: char ptr ptr
+ * @envp: set_t ptr
+ * @path: set_t ptr
  *
  * Return: shell_t ptr
 */
-shell_t	*shell_init_envp(shell_t *s, char **env)
+shell_t	*shell_init_return(shell_t *s, set_t *envp, set_t *path)
 {
-	if (s == 0)
-		return (0);
-	(void) env;
+	set_free(envp);
+	set_free(path);
 	return (s);
 }
 
@@ -62,63 +76,35 @@ shell_t	*shell_init(shell_t *s, u8 *name, char **env)
 	if (env == 0)
 		return (0);
 	envp = set_new(0);
-	if (envp == 0)
-		return (0);
 	path = set_new(0);
-	if (path == 0)
-	{
-		set_free(envp);
-		return (0);
-	}
+	if (envp == 0 || path == 0)
+		return (shell_init_return(s, envp, path));
 	for (x = 0; env[x]; x++)
 		envp = set_add(envp, (u8 *) env[x]);
 	if (envp == 0)
-	{
-		set_free(path);
-		return (0);
-	}
+		return (shell_init_return(s, envp, path));
 	v = set_consume(set_apply(set_filter(
 		set_clone(envp), set_filter_path), set_apply_path));
 	if (v == 0)
-	{
-		set_free(envp);
-		set_free(path);
-		return (0);
-	}
+		return (shell_init_return(s, envp, path));
 	if (v[0] == 0)
-	{
-		s = shell_new(s, name, envp, path);
-		set_free(envp);
-		set_free(path);
-		return (s);
-	}
+		return (shell_new(s, name, envp, path));
 	t = _strdup(v[0]);
 	for (x = 0; v[x]; x++)
 		free(v[x]);
 	free(v);
 	if (t == 0)
-	{
-		set_free(envp);
-		set_free(path);
-		return (0);
-	}
+		return (shell_init_return(s, envp, path));
 	v = _strsplit(t, (u8 *) ":");
 	free(t);
 	if (v == 0)
-	{
-		set_free(envp);
-		set_free(path);
-		return (0);
-	}
+		return (shell_init_return(s, envp, path));
 	for (x = 0; v[x]; x++)
 		path = set_add(path, v[x]);
 	for (x = 0; v[x]; x++)
 		free(v[x]);
 	free(v);
-	s = shell_new(s, name, envp, path);
-	set_free(envp);
-	set_free(path);
-	return (s);
+	return (shell_new(s, name, envp, path));
 }
 
 /**

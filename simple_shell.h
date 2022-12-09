@@ -82,6 +82,7 @@ vector_t	*set_apply_path(set_t *, vector_t *);
 u8		set_filter_path_exec(set_t *, u8 *);
 vector_t	*set_apply_path_exec(set_t *, vector_t *);
 shell_t		*shell_new(shell_t *, u8 *name, set_t *envp, set_t *path);
+shell_t		*shell_init_return(shell_t *s, set_t *envp, set_t *path);
 shell_t		*shell_init(shell_t *, u8 *name, char **env);
 shell_t		*shell_free(shell_t *);
 shell_t		*shell_prompt(shell_t *);
