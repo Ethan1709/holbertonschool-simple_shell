@@ -1,18 +1,22 @@
-# PROJECT: SIMPLE SHELL
+# SIMPLE_SHELL
 
-*Our second group project*
+A group project at Holberton-School Paris
 
-### Description of the project
+## What is this
 
-This project is to recreate a command-line interpreter of the UNIX operating system.
+This is a basic implementation of a POSIX shell.
+It makes heavy use of collection abstractions to compensate for the lack of automatic memory management in C
 
-### Here is the compilation command
 
-```gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh```
+# Compiling
+
+```sh
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -o hsh *.c
+```
 
 # Requirements
 
-* All our files are compiled on Ubuntu 20.04 LTS using ```gcc```, using the options ```-Wall -Werror -Wextra -pedantic -std=gnu89```
+* This project targets Ubuntu 20.04 LTS with GCC 9.4.0
 * List of authorized functions :
 	* access (man 2 access)
 	* chdir (man 2 chdir)
@@ -46,12 +50,30 @@ This project is to recreate a command-line interpreter of the UNIX operating sys
 	* wait4 (man 2 wait4)
 	* write (man 2 write)
 
-### EXAMPLES
+# Debugging
 
-<strong>This function has no return value</strong>
-<strong>We execute the man page with this command : ```man ./man_1_simple_shell```</strong>
-<strong>We check memory leaks using this command : ```valgrind ./hsh```</strong>
+## Memory Leaks
+
+### Valgrind
+
+```sh
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -g -o hsh *.c # Compile with -g
+valgrind ./hsh
+```
+
+# Documentation
+
+## Man Page
+
+```sh
+man ./man_1_simple_shell
+```
+
+# EXAMPLES
+
+* <strong>This function has no return value</strong>
 
 ### AUTHORS
 
-***Ethan B & Thibault R***
+- Ethan B <benyayerethan@gmail.com>
+- Thibault R <1337snavy@gmail.com>
