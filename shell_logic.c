@@ -76,7 +76,7 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args)
 	if (args == 0)
 		return (shell_free(s));
 	if (args[0] == 0)
-		return (shell_free(s));
+		return (s);
 	if (shell_exit_cmd(s, args) == 0)
 		return (0);
 	s->path->extra = args[0];
