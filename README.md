@@ -71,6 +71,8 @@ man ./man_1_simple_shell
 
 # EXAMPLES
 
+<img src="https://raw.githubusercontent.com/Ethan1709/holbertonschool-simple_shell/main/screen.png">
+
 * <strong>This function has no return value</strong>
 
 ### AUTHORS
