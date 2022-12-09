@@ -116,7 +116,11 @@ vector_t	*set_apply_path_exec(set_t *set, vector_t *v)
 	if (s == 0)
 		return (vector_free(r));
 	if (vector_write(r, s, _strlen(s)) == 0)
+	{
+		free(s);
 		return (vector_free(r));
+	}
+	free(s);
 	if (vector_write(r, "/", 1) == 0)
 		return (vector_free(r));
 	if (vector_write(r, set->extra, _strlen(set->extra)) == 0)
