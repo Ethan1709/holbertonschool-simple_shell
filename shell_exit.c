@@ -30,16 +30,11 @@ shell_t	*shell_exit(shell_t *s, u8 nl)
 */
 shell_t	*shell_exit_cmd(shell_t *s, u8 **args)
 {
-	u64	x;
-
 	if (s == 0)
 		return (0);
 	if (_strlen(args[0]) != _strlen((u8 *) "exit"))
 		return (s);
 	if (_strcmp(args[0], (u8 *) "exit") != 0)
 		return (s);
-	for (x = 0; args[x]; x++)
-		free(args[x]);
-	free(args);
 	return (shell_exit(s, 0));
 }

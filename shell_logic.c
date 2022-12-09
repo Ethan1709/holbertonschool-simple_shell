@@ -33,21 +33,21 @@ shell_t	*shell_exec(shell_t *s, u8 *path, u8 **args)
 		return (0);
 	envp = set_consume(set_clone(s->envp));
 	if (envp == 0)
-		return (shell_free(s));
+		return (0);
 	pid = fork();
 	if (pid == -1)
 	{
 		for (x = 0; envp[x]; x++)
 			free(envp[x]);
 		free(envp);
-		return (shell_free(s));
+		return (0);
 	}
 	if (pid == 0 && execve((char *) path, (char **) args, (char **) envp) == -1)
 	{
-		print_string("failed at execve\n");
 		for (x = 0; envp[x]; x++)
 			free(envp[x]);
 		free(envp);
+		return (0);
 	}
 	else
 	{
@@ -69,7 +69,7 @@ shell_t	*shell_exec(shell_t *s, u8 *path, u8 **args)
 shell_t	*shell_iter_line(shell_t *s, u8 **args)
 {
 	set_t	*set;
-	u64	x;
+	u8	*str;
 
 	if (s == 0)
 		return (0);
@@ -84,12 +84,7 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args)
 		set_apply_path_exec), args[0]), set_filter_path_exec);
 	s->path->extra = 0;
 	if (set == 0)
-	{
-		for (x = 0; args[x]; x++)
-			free(args[x]);
-		free(args);
 		return (shell_free(s));
-	}
 	if (set->size < 1)
 	{
 		print_string((char *) s->name);
@@ -97,11 +92,17 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args)
 	}
 	else
 	{
-		shell_exec(s, _strdup(set->data[0]), args);
+		str = _strdup(set->data[0]);
+		if (str == 0)
+			return (shell_free(s));
+		if (shell_exec(s, str, args) == 0)
+		{
+			print_string((char *) s->name);
+			print_string(ERRFILE);
+		}
+		free(str);
 	}
-	for (x = 0; args[x]; x++)
-		free(args[x]);
-	free(args);
+	set_free(set);
 	return (s);
 }
 
@@ -114,8 +115,11 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args)
 shell_t	*shell_iter(shell_t *s)
 {
 	u8	**l;
+	u8	**a;
 	u8	*i;
 	u64	x;
+	u64	y;
+	u8	f;
 
 	i = read_line();
 	if (i == 0)
@@ -124,13 +128,24 @@ shell_t	*shell_iter(shell_t *s)
 	free(i);
 	if (l == 0)
 		return (shell_exit(s, 1));
+	f = 0;
 	for (x = 0; l[x]; x++)
 	{
-		if (shell_iter_line(s, _strsplit(l[x], (u8 *) " ")) == 0)
-			return (0);
-		free(l[x]);
+		a = _strsplit(l[x], (u8 *) " ");
+		if (a == 0)
+			continue;
+		f = shell_iter_line(s, a) == 0;
+		for (y = 0; a[y]; y++)
+			free(a[y]);
+		free(a);
+		if (f)
+			break;
 	}
+	for (x = 0; l[x]; x++)
+		free(l[x]);
 	free(l);
+	if (f)
+		return (0);
 	return (s);
 }
 
