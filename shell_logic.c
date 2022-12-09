@@ -91,7 +91,7 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args, u64 line)
 		return (shell_free(s));
 	if (set->size < 1)
 	{
-		print_not_found(s->name, line);
+		print_not_found(s->name, line, args[0]);
 		*(s->exit) = 127;
 	}
 	else
@@ -101,7 +101,7 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args, u64 line)
 			return (shell_free(s));
 		if (shell_exec(s, str, args) == 0)
 		{
-			print_not_found(s->name, line);
+			print_not_found(s->name, line, args[0]);
 			*(s->exit) = 127;
 		}
 		free(str);
