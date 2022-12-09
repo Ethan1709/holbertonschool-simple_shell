@@ -25,6 +25,23 @@ void	print_string(char *str)
 }
 
 /**
+ * print_not_found - function
+ * @name: u8 ptr
+ * @line: u64
+*/
+void	print_not_found(u8 *name, u64 line)
+{
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+	{
+		print_string((char *) name);
+		print_string(": ");
+		print_string(ERRFILE);
+		return;
+	}
+	dprintf(STDERR_FILENO, "%s: %llu: %s", (char *) name, line, ERRFILE);
+}
+
+/**
  * read_line - function
  *
  * Return: []u8

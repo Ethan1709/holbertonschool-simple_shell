@@ -66,10 +66,11 @@ shell_t	*shell_exec(shell_t *s, u8 *path, u8 **args)
  * shell_iter_line - function
  * @s: shell_t ptr
  * @args: u8 ptr ptr
+ * @line: u64
  *
  * Return: shell_t ptr
 */
-shell_t	*shell_iter_line(shell_t *s, u8 **args)
+shell_t	*shell_iter_line(shell_t *s, u8 **args, u64 line)
 {
 	set_t	*set;
 	u8	*str;
@@ -90,8 +91,8 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args)
 		return (shell_free(s));
 	if (set->size < 1)
 	{
-		print_string((char *) s->name);
-		print_string(ERRFILE);
+		print_not_found(s->name, line);
+		*(s->exit) = 127;
 	}
 	else
 	{
@@ -100,8 +101,8 @@ shell_t	*shell_iter_line(shell_t *s, u8 **args)
 			return (shell_free(s));
 		if (shell_exec(s, str, args) == 0)
 		{
-			print_string((char *) s->name);
-			print_string(ERRFILE);
+			print_not_found(s->name, line);
+			*(s->exit) = 127;
 		}
 		free(str);
 	}
@@ -137,7 +138,7 @@ shell_t	*shell_iter(shell_t *s)
 		a = _strsplit(l[x], (u8 *) " ");
 		if (a == 0)
 			continue;
-		f = shell_iter_line(s, a) == 0;
+		f = shell_iter_line(s, a, x) == 0;
 		for (y = 0; a[y]; y++)
 			free(a[y]);
 		free(a);

@@ -65,8 +65,8 @@ u8		*_strcat(u8 *, u8 *);
 u8		**_strsplit(u8 *str, u8 *lim);
 void		print_char(char);
 void		print_string(char *);
+void		print_not_found(u8 *, u64);
 u8		*read_line();
-u8		*path_generate(u8 *dir, u8 *file);
 vector_t	*vector_new(vector_t *);
 vector_t	*vector_free(vector_t *);
 vector_t	*vector_write(vector_t *, void *src, u64 len);
@@ -91,13 +91,13 @@ shell_t		*shell_prompt(shell_t *);
 shell_t		*shell_exec(shell_t *, u8 *path, u8 **args);
 shell_t		*shell_exit(shell_t *, u8 nl);
 shell_t		*shell_exit_cmd(shell_t *, u8 **args);
-shell_t		*shell_iter_line(shell_t *, u8 **args);
+shell_t		*shell_iter_line(shell_t *, u8 **args, u64 line);
 shell_t		*shell_iter(shell_t *);
 shell_t		*shell_runtime(shell_t *);
 
 # define BUFFER_SIZE (1024)
 # define EXIT_TEXT   "👋"
 # define PROMPT_TEXT "🥷 $ "
-# define ERRFILE     ": No such file or directory\n"
+# define ERRFILE     "No such file or directory\n"
 
 #endif
