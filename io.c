@@ -38,7 +38,8 @@ void	print_not_found(u8 *name, u64 line)
 		print_string(ERRFILE);
 		return;
 	}
-	dprintf(STDERR_FILENO, "%s: %llu: %s", (char *) name, line, ERRFILE);
+	dprintf(STDERR_FILENO, "%s: %lu: %s",
+		(char *) name, (unsigned long) line, ERRFILE);
 }
 
 /**
