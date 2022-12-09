@@ -44,12 +44,14 @@ typedef struct	set_s
 
 /**
  * struct shell_s - struct
+ * @exit: int
  * @name: u8 ptr
  * @envp: set_t ptr
  * @path: set_t ptr
  */
 typedef struct shell_s
 {
+	int	*exit;
 	u8	*name;
 	set_t	*envp;
 	set_t	*path;

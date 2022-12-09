@@ -26,6 +26,7 @@ shell_t *shell_prompt(shell_t *s)
 shell_t	*shell_exec(shell_t *s, u8 *path, u8 **args)
 {
 	pid_t	pid;
+	int	status;
 	u8	**envp;
 	u64	x;
 
@@ -51,7 +52,9 @@ shell_t	*shell_exec(shell_t *s, u8 *path, u8 **args)
 	}
 	else
 	{
-		wait(0);
+		wait(&status);
+		if (status != 0)
+			*(s->exit) = 2;
 	}
 	for (x = 0; envp[x]; x++)
 		free(envp[x]);
