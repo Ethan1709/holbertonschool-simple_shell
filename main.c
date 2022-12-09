@@ -13,6 +13,7 @@ int	main(int argc, char **argv, char **envp)
 	int	exit;
 	shell_t	*shell;
 
+	exit = 0;
 	shell = shell_init(0, (u8 *) argv[0], envp);
 	if (shell == 0)
 		return (0);
