@@ -66,6 +66,7 @@ u8		**_strsplit(u8 *str, u8 *lim);
 void		print_char(char);
 void		print_string(char *);
 void		print_not_found(u8 *, u64, u8 *);
+void		free_string_array(u8 **);
 u8		*read_line();
 vector_t	*vector_new(vector_t *);
 vector_t	*vector_free(vector_t *);

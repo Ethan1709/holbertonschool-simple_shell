@@ -88,11 +88,12 @@ shell_t	*shell_init(shell_t *s, u8 *name, char **env)
 	if (v == 0)
 		return (shell_init_return(s, envp, path));
 	if (v[0] == 0)
+	{
+		free_string_array(v);
 		return (shell_new(s, name, envp, path));
+	}
 	t = _strdup(v[0]);
-	for (x = 0; v[x]; x++)
-		free(v[x]);
-	free(v);
+	free_string_array(v);
 	if (t == 0)
 		return (shell_init_return(s, envp, path));
 	v = _strsplit(t, (u8 *) ":");
@@ -101,9 +102,7 @@ shell_t	*shell_init(shell_t *s, u8 *name, char **env)
 		return (shell_init_return(s, envp, path));
 	for (x = 0; v[x]; x++)
 		path = set_add(path, v[x]);
-	for (x = 0; v[x]; x++)
-		free(v[x]);
-	free(v);
+	free_string_array(v);
 	return (shell_new(s, name, envp, path));
 }
 
