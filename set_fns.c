@@ -90,6 +90,8 @@ u8	set_filter_path_exec(set_t *set, u8 *str)
 		return (0);
 	if (str == 0)
 		return (0);
+	if (str[0] != '/' && str[0] != '.')
+		return (0);
 	return (access((char *) str, X_OK) == 0);
 }
 
