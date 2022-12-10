@@ -59,6 +59,7 @@ u8	**set_consume(set_t *set)
 	u8	**r;
 	u64	x;
 
+	r = 0;
 	if (set == 0)
 		return (0);
 	r = (u8 **) malloc(sizeof(u8 *) * (set->size + 1));

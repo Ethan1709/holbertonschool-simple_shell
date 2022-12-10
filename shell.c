@@ -72,6 +72,7 @@ shell_t	*shell_init(shell_t *s, u8 *name, char **env)
 	u8	*t;
 	u64	x;
 
+	v = 0;
 	s = shell_free(s);
 	if (env == 0)
 		return (0);
